@@ -10,9 +10,6 @@ import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.Reader;
 
-//adding a comment
-//adding another comment
-
 
 public class Stan {
 
@@ -259,10 +256,10 @@ public class Stan {
 
             //Initiallizes the writer and reader for your name
             PrintWriter nameWriter = new PrintWriter(new FileWriter("YourName.rtf", true));
-            BufferedReader nameRead = new BufferedReader(new FileReader("YourName.rtf"));
+            BufferedReader nameReader2 = new BufferedReader(new FileReader("YourName.rtf"));
 
             if(nameFile.length() != 0){
-                usersName = nameReader.readLine();
+                usersName = nameReader2.readLine();
             }
 
 
