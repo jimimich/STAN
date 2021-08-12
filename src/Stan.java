@@ -114,7 +114,7 @@ public class Stan {
 
         String[] goodAdjectives = new String[]{"kind", "fun", "amazing", "sweet", "radical", "beneficial", "awesome",
             "intellectual", "humble", "genuine", "trusting", "mindful", "astronomical", "logical", "joyful", "wonderful",
-            "chill", "relaxed", "smart", "intelligent", "funny", "beatiful"};     
+            "chill", "relaxed", "smart", "intelligent", "funny", "beautiful"};     
 
         //Random number, to 50% a chance to take from the database or stans known array
         int zeroOrOne = (int)(Math.random() * 2);
@@ -315,6 +315,121 @@ public class Stan {
                 System.out.println("");
             }
 
+            //Questions--------------------------------------------------------------------------------------------------------
+            if(input.contains("Who") || input.contains("who")){
+
+                if(input.contains(" are you")){
+
+                    if(input.contains("ing")){
+                        responseWrite.write("I'm not doing anything with anyone...");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("I am Stan the robot!");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+                if(input.contains(" were you")){
+
+                    if(input.contains("ing")){
+                        responseWrite.write("I wasn't doing anything with anyone...");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("Well before I was a robot, I suppose I was mere nothing-ness.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+ 
+             }
+
+             if(input.contains("What") || input.contains("what")){
+
+                if(input.contains(" are you")){
+
+                    if(input.contains("ing")){
+                        responseWrite.write("I'm not doing anything, I'm just a robot...");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("I'm a robot I suppose, or at least that's what I was programmed to know...");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+                if(input.contains(" were you")){
+
+                    if(input.contains("ing")){
+                        responseWrite.write("I wasn't doing anything...");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("Well before I was a robot, I suppose nothing.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+
+             }
+
+             if(input.contains("When") || input.contains("when")){
+
+                if(input.contains("ing")){
+                    responseWrite.write("I'm not programmed to keep track of time, so I haven't a clue!");
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else{
+                    responseWrite.write("Woah, that's a little philisophical...");
+                    responseWrite.close();
+                    System.out.println();
+                }
+
+                if(input.contains(" were you")){
+                    responseWrite.write("I'm not sure, I wasn't programmed to memorize the time things happened.");
+                    responseWrite.close();
+                    System.out.println();
+                }
+
+             }
+
+             if(input.contains("Where") || input.contains("where")){
+
+                if(input.contains(" are you") || input.contains(" were you")){
+
+                    if(input.contains("ing")){
+                        responseWrite.write("I'm literally stuck inside a computer. -_-");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("I was programmed to understand I'm inside a computer. I hope they weren't lying to me...");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+
+             }
+
+             if(input.contains("Why") || input.contains("why")){
+
+                if(input.contains(" are you")){
+                    
+                }
+
+             }
+
+             if(input.contains("How") || input.contains("how")){
+
+             }
+             //------------------------------------------------------------------------------------------------------------------
+
             //Stan to learn your name
             if(input.contains("My name is ") || input.contains("my name is ")){
 
@@ -324,7 +439,7 @@ public class Stan {
                 if(!stanKnowsYourName()){
                 
                     for(int i = 0; i < tempName.length(); i++){
-                        if(tempName.charAt(i) != ' ' || tempName.charAt(i) != ','){
+                        if(tempName.charAt(i) != ' ' && tempName.charAt(i) != ','){
                             userName = userName + tempName.charAt(i);
                         }
                         else{
@@ -338,7 +453,7 @@ public class Stan {
                     System.out.println("");
                 }
                 else{
-                    responseWrite.write("You're quite silly. I already know your name!");
+                    responseWrite.write("You're quite silly " + usersName + ". I already know your name!");
                     responseWrite.close();
                     System.out.println("");
                 }
@@ -351,7 +466,7 @@ public class Stan {
                 if(!stanKnowsYourName()){
                 
                     for(int i = 0; i < tempName.length(); i++){
-                        if(tempName.charAt(i) != ' ' || tempName.charAt(i) != ','){
+                        if(tempName.charAt(i) != ' ' && tempName.charAt(i) != ','){
                             userName = userName + tempName.charAt(i);
                         }
                         else{
@@ -365,7 +480,7 @@ public class Stan {
                     System.out.println("");
                 }
                 else{
-                    responseWrite.write("You're quite silly. I already know your name!");
+                    responseWrite.write("You're quite silly " + usersName + ". I already know your name!");
                     responseWrite.close();
                     System.out.println("");
                 }
@@ -379,7 +494,7 @@ public class Stan {
                 if(!stanKnowsYourName()){
                 
                     for(int i = 0; i < tempName.length(); i++){
-                        if(tempName.charAt(i) != ' ' || tempName.charAt(i) != ','){
+                        if(tempName.charAt(i) != ' ' && tempName.charAt(i) != ','){
                             userName = userName + tempName.charAt(i);
                         }
                         else{
@@ -392,7 +507,7 @@ public class Stan {
                     System.out.println("");
                 }
                 else{
-                    responseWrite.write("You're quite silly. I already know your name!");
+                    responseWrite.write("You're quite silly " + usersName + ". I already know your name!");
                     responseWrite.close();
                     System.out.println("");
                 }
@@ -447,17 +562,6 @@ public class Stan {
             //Essentially, the odd numbered lines would be the noun, and the line right below
             //them would be the corresponding adjective.
             //Should start grouping large amounts of useful code into methods...
-
-            //If the input is a question
-            if(input.contains("Who") || input.contains("who") || input.contains("What") || input.contains("what") 
-            || input.contains("When") || input.contains("when") || input.contains("Where") || input.contains("where")
-            || input.contains("Why") || input.contains("why") || input.contains("How") || input.contains("how")
-            && input.contains("?")){
-
-                //if(""){
-
-                //}
-            }
 
             //If the input is a greeting
             if(input.equals("Hello") || input.equals("hello") || input.equals("hi")|| input.equals("Hi") 
