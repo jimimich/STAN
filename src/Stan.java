@@ -172,6 +172,52 @@ public class Stan {
 
     }
 
+    public static Boolean stanKnowsGoodAdjective(String input){
+
+        File file = new File("GoodAdjectives.rtf");
+        Boolean known = false;
+
+        try {
+            Scanner scanner = new Scanner(file);
+
+        //now read the file line by line...
+            int lineNum = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                lineNum++;
+                if(input.contains(line)) { 
+                    known = true;
+                }
+            }
+        } catch(FileNotFoundException e) { 
+            //handle this
+        }
+        return known;
+    }
+
+    public static Boolean stanKnowsBadAjective(String input){
+
+        File file = new File("BadAdjectives.rtf");
+        Boolean known = false;
+
+        try {
+            Scanner scanner = new Scanner(file);
+
+        //now read the file line by line...
+            int lineNum = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                lineNum++;
+                if(input.contains(line)) { 
+                    known = true;
+                }
+            }
+        } catch(FileNotFoundException e) { 
+            //handle this
+        }
+        return known;
+    }
+
     public static void main(String[] args) throws IOException{
         //System.out.println((int) (Math.random() * 2));
         //STAN checks if he knows your name
@@ -193,8 +239,6 @@ public class Stan {
         "Hello!", "Hi! I'm STAN, what is your name?", "Heyyyyyyyy ;)", "Hello Stanger!", "Hello fellow robot!", "Greetings.",
         "Hello! Where am I?"};
         }
-
-        //If STAN knows your name he can greet you by your name!
 
         //STAN Adjectives
         String[] goodAdjectives = new String[]{"kind", "fun", "amazing", "sweet", "radical", "beneficial", "awesome",
@@ -599,11 +643,7 @@ public class Stan {
                 }
 
                 //If the greeting is mean
-                if(input.contains("stupid") ||  input.contains("awful") || input.contains("smelly") || input.contains("ugly") || input.contains("rude") || 
-                input.contains("disgusting") || input.contains("corrupt") || input.contains("diabolical") || input.contains("bad") || input.contains("unfunny") || 
-                input.contains("uncool") || input.contains("trash") || input.contains("trashy") || input.contains("dumb") || input.contains("unfunny") || 
-                input.contains("disrespectful") || input.contains("irresponsible") || input.contains("uncaring") || input.contains("dreadful")||
-                input.contains("idiotic") || input.contains("pussy") || input.contains("weird")){
+                if(stanKnowsBadAjective(input)){
 
                     //Randomizes a chance to either make stan sad or mad
                     int zeroOrOne = (int) Math.round(Math.random());
@@ -638,11 +678,7 @@ public class Stan {
                         makeStanSad();
                     }
                 }
-                if(input.contains("kind") || input.contains("fun") || input.contains("amazing") || input.contains("sweet") || input.contains("radical") || 
-                input.contains("beneficial") || input.contains("awesome") || input.contains("intellectual") || input.contains("humble") || input.contains("genuine") || 
-                input.contains("trusting") || input.contains("mindful") || input.contains("astronomical") || input.contains("logical") || input.contains("joyful") || 
-                input.contains("wonderful") || input.contains("chill") || input.contains("relaxed") || input.contains("smart") ||  input.contains("intelligent") || 
-                input.contains("funny") || input.contains("cool") || input.contains("beautiful") || input.contains("nice") || input.contains("cute")){
+                if(stanKnowsGoodAdjective(input)){
 
                     int randComment = (int) Math.round(Math.random());
 
@@ -696,15 +732,11 @@ public class Stan {
 
             //Could see if the input equals "why" and then check the previous response to give a proper answer...
 
-            //If the input says something about STAN
+            //If the input says something about STAN------------------------------------------------------
             if(input.contains("You") || input.contains("you")){
 
                 //If the input is an insult
-                if(input.contains("stupid") ||  input.contains("awful") || input.contains("smelly") || input.contains("ugly") || input.contains("rude") || 
-                input.contains("disgusting") || input.contains("corrupt") || input.contains("diabolical") || input.contains("bad") || input.contains("unfunny") || 
-                input.contains("uncool") || input.contains("trash") || input.contains("trashy") || input.contains("dumb") || input.contains("unfunny") || 
-                input.contains("disrespectful") || input.contains("irresponsible") || input.contains("uncaring") || input.contains("dreadful")||
-                input.contains("idiotic") || input.contains("pussy") || input.contains("weird")){
+                if(stanKnowsBadAjective(input)){
 
                     //Randomizes STAN being sad or mad
                     int zeroOrOne = (int) Math.round(Math.random());
@@ -741,12 +773,7 @@ public class Stan {
                 }
 
                 //if the input is a compliment
-                if(input.contains("kind") || input.contains("fun") || input.contains("amazing") || input.contains("sweet") || input.contains("radical") || 
-                input.contains("beneficial") || input.contains("awesome") || input.contains("intellectual") || input.contains("humble") || input.contains("genuine") || 
-                input.contains("trusting") || input.contains("mindful") || input.contains("astronomical") || input.contains("logical") || input.contains("joyful") || 
-                input.contains("wonderful") || input.contains("chill") || input.contains("relaxed") || input.contains("smart") ||  input.contains("intelligent") || 
-                input.contains("funny") || input.contains("cool") || input.contains("beautiful") || input.contains("nice") || input.contains("cute")
-                ){
+                if(stanKnowsGoodAdjective(input)){
                 
                     //Code for STAN to say a nice comment-------------------------------
                     int randComment = (int) Math.round(Math.random());
@@ -772,6 +799,7 @@ public class Stan {
                 // else statement to learn adjectives it hasn't heard before
 
             }
+            //------------------------------------------------------------------------------------------------------
 
             if(input.contains("I love you") && !stanIsMad() && !stanIsSad()
             || input.contains("i love you") && !stanIsMad() && !stanIsSad()){
