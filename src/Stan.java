@@ -388,8 +388,26 @@ public class Stan {
                         System.out.println();
                     }
                 }
- 
-             }
+                if(input.contains("am I") || input.contains("am i")){
+                    if(input.contains("ing")){
+                        responseWrite.write("I am unaware of your actions with other humans.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        if(stanKnowsYourName()){
+                            responseWrite.write("You are "+ usersName + "!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else{
+                            responseWrite.write("I'm not sure, you can tell me your name if you'd like!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                    }
+                }
+            }
 
              if(input.contains("What") || input.contains("what")){
 
@@ -419,28 +437,47 @@ public class Stan {
                         System.out.println();
                     }
                 }
-
+                if(input.contains("am I") || input.contains("am i")){
+                    if(input.contains("ing")){
+                        responseWrite.write("I am unknowing of your current actions.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("You are a human from my understanding.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
              }
 
              if(input.contains("When") || input.contains("when")){
 
-                if(input.contains("ing")){
-                    responseWrite.write("I'm not programmed to keep track of time, so I haven't a clue!");
-                    responseWrite.close();
-                    System.out.println();
-                }
-                else{
-                    responseWrite.write("Woah, that's a little philisophical...");
-                    responseWrite.close();
-                    System.out.println();
-                }
+                if(input.contains(" are you") || input.contains(" were you")){
 
-                if(input.contains(" were you")){
-                    responseWrite.write("I'm not sure, I wasn't programmed to memorize the time things happened.");
-                    responseWrite.close();
-                    System.out.println();
+                    if(input.contains("ing")){
+                        responseWrite.write("I'm not programmed to know the timing of my actions.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("That's a little philisophical, I can't quite answer that.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
                 }
-
+                if(input.contains("am I") || input.contains("am i")){
+                    if(input.contains("ing")){
+                        responseWrite.write("I'm not programmed to know your scheduling of your actions.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("That's a little philisophical, I can't quite answer that.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
              }
 
              if(input.contains("Where") || input.contains("where")){
@@ -458,19 +495,62 @@ public class Stan {
                         System.out.println();
                     }
                 }
-
-             }
+                if(input.contains("am I") || input.contains("am i")){
+                    //with verb
+                    if(input.contains("ing")){
+                        responseWrite.write("I do not know your future locations.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    //else
+                    else{
+                        responseWrite.write("I don't know, I cannot see out of this computer. Perhaps use your own eyes?");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+            }
 
              if(input.contains("Why") || input.contains("why")){
 
                 if(input.contains(" are you")){
-                    
+
+                    if(input.contains("ing")){
+                        responseWrite.write("I don't have to explain my reasoning to you!");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("That makes no sense, sorry!");
+                        responseWrite.close();
+                        System.out.println();
+                    }
                 }
+                if(input.contains(" were you")){
 
-             }
-
-             if(input.contains("How") || input.contains("how")){
-
+                    if(input.contains("ing")){
+                        responseWrite.write("I don't have to explain my reasoning to you!");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("That makes no sense, sorry!");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+                if(input.contains("am I") || input.contains("am i")){
+                    if(input.contains("ing")){
+                        responseWrite.write("I do not know your motives.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    else{
+                        responseWrite.write("That is too philisophical for my database knowledge.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
              }
              //------------------------------------------------------------------------------------------------------------------
 
