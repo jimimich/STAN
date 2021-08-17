@@ -551,7 +551,13 @@ public class Stan {
                         System.out.println();
                     }
                 }
-             }
+                else{
+                    responseWrite.write("That's just how it is!");
+                    responseWrite.close();
+                    System.out.println();
+                }
+            }
+
              //------------------------------------------------------------------------------------------------------------------
 
             //Stan to learn your name
@@ -1019,9 +1025,65 @@ public class Stan {
 
                 }
             }
+            if(stanKnowsGoodAdjective(input)){
+
+                if(stanIsHappy()){
+                    responseWrite.write("Yes, quite " + pickGoodAdjective() + "!");
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else if(stanIsMad()){
+                    responseWrite.write("Sure, whatever.");
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else if(stanIsSad()){
+                    responseWrite.write("Yea, sure I guess :(");
+                    responseWrite.close();
+                    System.out.println();
+                }
+
+            }
+            if(stanKnowsBadAjective(input)){
+
+                if(stanIsHappy()){
+                    responseWrite.write("Well, if you think so, then I guess it's quite " + pickBadAdjective() + "!");
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else if(stanIsMad()){
+                    responseWrite.write("That's completley "+ pickBadAdjective() + " anyway.");
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else if(stanIsSad()){
+                    responseWrite.write("Well what are you saying that for? :(");
+                    responseWrite.close();
+                    System.out.println();
+                }
+
+            }
+
+            if(input.contains("friend")){
+
+                if(input.contains("not") || input.contains("arent") || input.contains("aren't")){
+
+                    responseWrite.write("You are " + pickBadAdjective() + "! I thought we were great friends.");
+                    responseWrite.close();
+                    System.out.println();
+                    makeStanMad();
+                }
+                else{
+                    responseWrite.write("You are so " + pickGoodAdjective() + "! We are great friends.");
+                    responseWrite.close();
+                    System.out.println();
+                    makeStanHappy();
+                }
+            }
+
 
             //Else for if he doesnt understand any possible input
-            else{
+            else {
                 responseWrite.write("I'm not sure I understand, could you add more context?");
                 responseWrite.close();
                 System.out.println();
