@@ -1,11 +1,15 @@
 import java.util.Random;
 import java.util.Scanner;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.Reader;
@@ -218,6 +222,43 @@ public class Stan {
         return known;
     }
 
+    public static void stanLearns() throws IOException{
+
+        System.out.println("What kind of word are you teaching me, a good or bad adjective?");
+        Scanner sc = new Scanner(System.in);
+        String goodOrBad = sc.nextLine();
+
+        if(goodOrBad.contains("good") || goodOrBad.contains("Good")){
+            //Fix this
+            System.out.println("Type in the word so I can learn it!");
+            Scanner sc2 = new Scanner(System.in);
+            String goodWord = sc2.nextLine();
+            goodWord = goodWord.toLowerCase();
+           // BufferedWriter goodAdjWriter = new BufferedWriter(File "GoodAdjectives.rtf");
+           // goodAdjWriter.write(goodWord);
+           // goodAdjWriter.close();
+            System.out.println();
+            System.out.println("Sweet! Now I have more knowledge...");
+        }
+        else if(goodOrBad.contains("bad") || goodOrBad.contains("Bad")){
+
+            System.out.println("Type in the word so I can learn it!");
+            Scanner sc2 = new Scanner(System.in);
+            String badWord = sc2.nextLine();
+            badWord = badWord.toLowerCase();
+            PrintWriter goodAdjWriter = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
+            goodAdjWriter.write(badWord);
+            goodAdjWriter.close();
+            System.out.println();
+            System.out.println("Sweet! Now I have more knowledge...");
+
+        }
+        else{
+            System.out.println("What? I'm going to start over that was confusing.");
+            stanLearns();
+        }
+    }
+
     public static void main(String[] args) throws IOException{
         //System.out.println((int) (Math.random() * 2));
         //STAN checks if he knows your name
@@ -264,6 +305,8 @@ public class Stan {
         "You're a treasure, and so genuine!", "How mindful of you! :)", "That is kind. Thank you!", "You seem relaxed. I'm very happy to see that!",
         "Thank You! :)"};
 
+        //Could add an array of responses to "I am good today" or "I am bad today" also depending on if he's mad
+
         //String[] confusedComments = new String[] {"I'm not sure I quite understan. Could you add more context?"}
 
         //Array of comments for what kind of mood hes in, when you ask him how he is
@@ -288,7 +331,7 @@ public class Stan {
         System.out.println("");
         System.out.println("S.T.A.N. (Social Terminal Artifical Network)");
         System.out.println("");
-        System.out.println("Say Hello, or press 0 to quit.");
+        System.out.println("Say Hello, press f to see STAN's features, or press 0 to quit.");
         System.out.println("");
 
         while(true){
@@ -336,6 +379,20 @@ public class Stan {
             //To Quit
             if (input.equals("0")){
                 break;
+            }
+
+            if(input.equals("f")){
+                System.out.println("STAN's Features:");
+                System.out.println("1. You can have basic conversation with STAN, including things like greetings or how he's feeling.");
+                System.out.println("2. You can use adjectives to describe STAN, either good or bad. This can affect his mood.");
+                System.out.println("3. STAN can either be happy, sad, or mad. His mood can sometimes change the way he responds to you.");
+                System.out.println("4. STAN can learn good and bad adjectives from you, and use them in his own language.");
+                System.out.println("5. STAN also knows when you call him adjectives he has already learned, and this can also alter his mood.");
+                System.out.println("6. STAN does not know the user's name at first, but you can tell him it and he will remember it.");
+            }
+
+            if(input.equals("learn")){
+                stanLearns();
             }
 
             if (input.equals("Flip a coin") || input.equals("flip a coin") || input.equals("Flip a coin!")
@@ -1083,10 +1140,39 @@ public class Stan {
 
 
             //Else for if he doesnt understand any possible input
-            else {
-                responseWrite.write("I'm not sure I understand, could you add more context?");
-                responseWrite.close();
-                System.out.println();
+            else if(!input.equals("f")){
+
+                if(stanIsHappy()){
+                    String[] oneWordHappyResponses = new String[] {"Interesting!", "I see.", "Alrighty!", "Sweet.", "Well ok then!"};
+                    Random random = new Random();
+                    int index = random.nextInt(oneWordHappyResponses.length);
+                    String sResponse = oneWordHappyResponses[index];
+                    responseWrite.write(sResponse);
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else if(stanIsMad()){
+                    String[] oneWordMadResponses = new String[] {"Whatever.", "Haha ok...", "I don't really care.", "There really wasn't a point to that.", "Dumb."};
+                    Random random = new Random();
+                    int index = random.nextInt(oneWordMadResponses.length);
+                    String sResponse = oneWordMadResponses[index];
+                    responseWrite.write(sResponse);
+                    responseWrite.close();
+                    System.out.println();
+                }
+                else if(stanIsSad()){
+                    String[] oneWordSadResponses = new String[] {"...", "Ok... :(", "I don't want to respond to that... :(", "..."};
+                    Random random = new Random();
+                    int index = random.nextInt(oneWordSadResponses.length);
+                    String sResponse = oneWordSadResponses[index];
+                    responseWrite.write(sResponse);
+                    responseWrite.close();
+                    System.out.println();
+                }
+            
+            }
+            else{
+
             }
                 
 
