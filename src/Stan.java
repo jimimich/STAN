@@ -115,7 +115,7 @@ public class Stan {
     //Possibly create a method that erases all data, and STAN forgets all his databases...
 
     public static String pickGoodAdjective() throws IOException{
-        
+
             String adjective = "";
             File file = new File("GoodAdjectives.rtf"); 
 
@@ -129,35 +129,18 @@ public class Stan {
         
     }
     public static String pickBadAdjective() throws IOException{
-        String[] badAdjectives = new String[]{"stupid", "awful", "smelly", "ugly", "rude", "disgusting", "corrupt",
-            "diabolical", "bad", "unfunny", "uncool", "trash", "trashy", "dumb", "unfunny", "disrespectful", "irresponsible",
-            "uncaring", "dreadful", "idiotic", "pussy", "weird"};
-
-        //Random number, to 50% a chance to take from the database or stans known array
-        int rand = (int)(Math.random() * 2);
+        
         String adjective = "";
         File file = new File("BadAdjectives.rtf");
 
-        if(rand == 0){
-            //File accessor
-            final RandomAccessFile f = new RandomAccessFile(file, "r");
-            //Random location
-            final long randomLocation = (long) (Math.random() * f.length());
-            f.seek(randomLocation);
-            f.readLine();
-            adjective = f.readLine();
-            return adjective;
-        }
-        if(rand == 1){
-            //Picks randomly from the array
-            Random random = new Random();
-            int index = random.nextInt(badAdjectives.length);
-            adjective = badAdjectives[index];
-            return adjective;
-        }
-        else{
-            return adjective;
-        }
+        //File accessor
+        final RandomAccessFile f = new RandomAccessFile(file, "r");
+        final long randomLocation = (long) (Math.random() * f.length());
+        f.seek(randomLocation);
+        f.readLine();
+        adjective = f.readLine();
+        return adjective;
+        
 
     }
 
@@ -243,9 +226,30 @@ public class Stan {
         }
     }
 
+    public static String formulateHappyResponse() throws IOException{
+
+        String[] niceStarters = new String[] {"Ok! That's very ", "You are very ", "Thanks! That's ", "To me, that appears "};
+
+        Random random = new Random();
+        int index = random.nextInt(niceStarters.length);
+        String response = niceStarters[index] + pickGoodAdjective() + "!";
+        return response;
+
+    }
+
+    public static String formulateMadResponse() throws IOException{
+        
+
+        String[] madStarters = new String[] {"You are literally so ", "You're such an asshole, stop being so ", "I can't believe you're so ",
+        "You disgust me, and I'm literally a robot. You're also "};
+        Random random = new Random();
+        int index = random.nextInt(madStarters.length);
+        String response = madStarters[index] + pickBadAdjective() + "!";
+        return response;
+        
+    }
+
     public static void main(String[] args) throws IOException{
-        //System.out.println((int) (Math.random() * 2));
-        //STAN checks if he knows your name
 
         BufferedReader nameReader = new BufferedReader(new FileReader("YourName.rtf"));
         File nameFile = new File("YourName.rtf"); 
@@ -268,12 +272,6 @@ public class Stan {
         //Comments Stan can make
         String[] sadComments = new String[] {"Awww, I'm pretty sad now. :(", "Oh, ok :/", "That was rude :(", "Is that *sniff* all you got? :(",
         "Wow. I'm hurt. :/", "I'm just a robot, so I'm supposed to feel sad when you say things like that. :("};
-        String [] madComments = new String[] {"You're a real asshole!", "That's rude, take that back.", "You are trashy.", 
-        "You're quite unfunny for that!", "I am a robot. I'm supposed to be mad now. You're stupid.", "I am angry now.",
-        "You're a lying piece of crap.", "Let's take this out back you uncool gangbanging raccoon."};
-        String [] niceComments = new String[] {"That's very kind! I hope you have an awesome day!", "That's sweet!", 
-        "You're a treasure, and so genuine!", "How mindful of you! :)", "That is kind. Thank you!", "You seem relaxed. I'm very happy to see that!",
-        "Thank You! :)"};
 
         //Could add an array of responses to "I am good today" or "I am bad today" also depending on if he's mad
 
@@ -771,28 +769,15 @@ public class Stan {
 
                 //If the greeting includes I love you
                 if(input.contains("I love you") || input.contains("i love you")){
-
-                    //nice comments also including I love you
-                    int randComment = (int) Math.round(Math.random());
     
-                            if(randComment == 0){
-                                Random random = new Random();
-                                int index = random.nextInt(niceStarters.length);
-                                responseWrite.write("I love you too! " + niceStarters[index] + pickGoodAdjective() + "!");
-                                responseWrite.close();
-                                System.out.println("");
-                                makeStanHappy();
-                            }
-                            if(randComment == 1){
-                                Random random = new Random();
-                                int index = random.nextInt(niceComments.length);
-                                responseWrite.write("I love you too! " + niceComments[index]);
-                                responseWrite.close();
-                                System.out.println("");
-                                makeStanHappy();
-                            }
+                    responseWrite.write("I love you too! " + formulateHappyResponse());
+                    responseWrite.close();
+                    System.out.println("");
+                    makeStanHappy();
     
                 }
+                //Possibly add a streak feature, which would be a counter that goes up when you are nice to stan,
+                //and down when you are mean. This can determine a friendship status.
 
                 //If the greeting is mean
                 if(stanKnowsBadAjective(input)){
@@ -801,25 +786,11 @@ public class Stan {
                     int zeroOrOne = (int) Math.round(Math.random());
 
                     if(zeroOrOne == 0){
-
-                        int randComment = (int) Math.round(Math.random());
-
-                        if(randComment == 0){
-                            Random random = new Random();
-                            int index = random.nextInt(madStarters.length);
-                            responseWrite.write(madStarters[index] + pickBadAdjective() + "!");
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanMad();
-                        }
-                        if(randComment == 1){
-                            Random random = new Random();
-                            int index = random.nextInt(madComments.length);
-                            responseWrite.write(madComments[index]);
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanMad();
-                        }
+                        responseWrite.write(formulateMadResponse());
+                        responseWrite.close();
+                        System.out.println("");
+                        makeStanMad();
+                       
                     }
                     if(zeroOrOne == 1){
                         Random random = new Random();
@@ -830,26 +801,13 @@ public class Stan {
                         makeStanSad();
                     }
                 }
+                //If the greeting is nice
                 if(stanKnowsGoodAdjective(input)){
 
-                    int randComment = (int) Math.round(Math.random());
-
-                        if(randComment == 0){
-                            Random random = new Random();
-                            int index = random.nextInt(niceStarters.length);
-                            responseWrite.write(niceStarters[index] + pickGoodAdjective() + "!");
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanHappy();
-                        }
-                        if(randComment == 1){
-                            Random random = new Random();
-                            int index = random.nextInt(niceComments.length);
-                            responseWrite.write(niceComments[index]);
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanHappy();
-                        }
+                    responseWrite.write(formulateHappyResponse());
+                    responseWrite.close();
+                    System.out.println("");
+                    makeStanHappy();
                 }
                 //Writes a random greeting
                 if(stanKnowsYourName()){
@@ -919,24 +877,10 @@ public class Stan {
                     int zeroOrOne = (int) Math.round(Math.random());
 
                     if(zeroOrOne == 0){
-                        int randComment = (int) Math.round(Math.random());
-
-                        if(randComment == 0){
-                            Random random = new Random();
-                            int index = random.nextInt(madStarters.length);
-                            responseWrite.write(madStarters[index] + pickBadAdjective() + "!");
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanMad();
-                        }
-                        if(randComment == 1){
-                            Random random = new Random();
-                            int index = random.nextInt(madComments.length);
-                            responseWrite.write(madComments[index]);
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanMad();
-                        }
+                        responseWrite.write(formulateMadResponse());
+                        responseWrite.close();
+                        System.out.println("");
+                        makeStanMad();
                     }
                     if(zeroOrOne == 1){
                         Random random = new Random();
@@ -953,24 +897,12 @@ public class Stan {
                 if(stanKnowsGoodAdjective(input)){
                 
                     //Code for STAN to say a nice comment-------------------------------
-                    int randComment = (int) Math.round(Math.random());
+                    
+                    responseWrite.write(formulateHappyResponse());
+                    responseWrite.close();
+                    System.out.println("");
+                    makeStanHappy();
 
-                        if(randComment == 0){
-                            Random random = new Random();
-                            int index = random.nextInt(niceStarters.length);
-                            responseWrite.write(niceStarters[index] + pickGoodAdjective() + "!");
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanHappy();
-                        }
-                        if(randComment == 1){
-                            Random random = new Random();
-                            int index = random.nextInt(niceComments.length);
-                            responseWrite.write(niceComments[index]);
-                            responseWrite.close();
-                            System.out.println("");
-                            makeStanHappy();
-                        }
                     //-----------------------------------------------------------------
                 }
                 // else statement to learn adjectives it hasn't heard before
@@ -981,25 +913,11 @@ public class Stan {
             if(input.contains("I love you") && !stanIsMad() && !stanIsSad()
             || input.contains("i love you") && !stanIsMad() && !stanIsSad()){
 
-                //nice comments also including I love you
-                int randComment = (int) Math.round(Math.random());
-
-                if(randComment == 0){
-                    Random random = new Random();
-                    int index = random.nextInt(niceStarters.length);
-                    responseWrite.write("I love you too! " + niceStarters[index] + pickGoodAdjective() + "!");
-                    responseWrite.close();
-                    System.out.println("");
-                    makeStanHappy();
-                }
-                if(randComment == 1){
-                    Random random = new Random();
-                    int index = random.nextInt(niceComments.length);
-                    responseWrite.write("I love you too! " + niceComments[index]);
-                    responseWrite.close();
-                    System.out.println("");
-                    makeStanHappy();
-                }
+                responseWrite.write("I love you too! " + formulateHappyResponse());
+                responseWrite.close();
+                System.out.println("");
+                makeStanHappy();
+                
             }
             else if (input.contains("I love you") && stanIsMad()|| input.contains("i love you") && stanIsMad()){
                 responseWrite.write("Shut up! You are literally so annoying!");
@@ -1086,22 +1004,10 @@ public class Stan {
 
                 if(stanIsMad()){
 
-                        int randComment = (int) Math.round(Math.random());
-
-                        if(randComment == 0){
-                            Random random = new Random();
-                            int index = random.nextInt(madStarters.length);
-                            responseWrite.write(madStarters[index] + pickBadAdjective() + "!");
-                            responseWrite.close();
-                            System.out.println("");
-                        }
-                        if(randComment == 1){
-                            Random random = new Random();
-                            int index = random.nextInt(madComments.length);
-                            responseWrite.write(madComments[index]);
-                            responseWrite.close();
-                            System.out.println("");
-                        }
+                    responseWrite.write(formulateMadResponse());
+                    responseWrite.close();
+                    System.out.println("");
+                        
                     }
 
 
