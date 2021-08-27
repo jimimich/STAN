@@ -115,33 +115,18 @@ public class Stan {
     //Possibly create a method that erases all data, and STAN forgets all his databases...
 
     public static String pickGoodAdjective() throws IOException{
+        
+            String adjective = "";
+            File file = new File("GoodAdjectives.rtf"); 
 
-        String[] goodAdjectives = new String[]{"kind", "fun", "amazing", "sweet", "radical", "beneficial", "awesome",
-            "intellectual", "humble", "genuine", "trusting", "mindful", "astronomical", "logical", "joyful", "wonderful",
-            "chill", "relaxed", "smart", "intelligent", "funny", "beautiful"};     
-
-        //Random number, to 50% a chance to take from the database or stans known array
-        int zeroOrOne = (int)(Math.random() * 2);
-        String adjective = "";
-        File file = new File("GoodAdjectives.rtf"); 
-
-        if(zeroOrOne == 0){
             final RandomAccessFile f = new RandomAccessFile(file, "r");
             final long randomLocation = (long) (Math.random() * f.length());
             f.seek(randomLocation);
             f.readLine();
             adjective = f.readLine();
             return adjective;
-        }
-        if(zeroOrOne == 1){      
-            Random random = new Random();
-            int index = random.nextInt(goodAdjectives.length);
-            adjective = goodAdjectives[index];
-            return adjective;
-        }
-        else{
-            return adjective;
-        }
+        
+        
     }
     public static String pickBadAdjective() throws IOException{
         String[] badAdjectives = new String[]{"stupid", "awful", "smelly", "ugly", "rude", "disgusting", "corrupt",
@@ -251,7 +236,6 @@ public class Stan {
             goodAdjWriter.close();
             System.out.println();
             System.out.println("Sweet! Now I have more knowledge...");
-
         }
         else{
             System.out.println("What? I'm going to start over that was confusing.");
@@ -266,20 +250,6 @@ public class Stan {
         BufferedReader nameReader = new BufferedReader(new FileReader("YourName.rtf"));
         File nameFile = new File("YourName.rtf"); 
         String usersName = nameReader.readLine();
-
-        String[] greetingArray;
-
-        //Array of Stan's greetings
-        if(stanKnowsYourName()){
-            greetingArray = new String[]{"Hi!", "Salutations", "Hi! How are you feeling?", "Howdy " + usersName + "!",
-            "Hello!", "Hey "+ usersName + " it's STAN here!", "Heyyyyyyyy ;)", "Hello " + usersName + "!", 
-            "Hello fellow robot!"};
-        }
-        else{
-            greetingArray = new String[]{"Hi!", "Salutations", "Hi! How are you feeling?", "Howdy, what's your name?",
-        "Hello!", "Hi! I'm STAN, what is your name?", "Heyyyyyyyy ;)", "Hello Stanger!", "Hello fellow robot!", "Greetings.",
-        "Hello! Where am I?"};
-        }
 
         //STAN Adjectives
         String[] goodAdjectives = new String[]{"kind", "fun", "amazing", "sweet", "radical", "beneficial", "awesome",
@@ -389,10 +359,49 @@ public class Stan {
                 System.out.println("4. STAN can learn good and bad adjectives from you, and use them in his own language.");
                 System.out.println("5. STAN also knows when you call him adjectives he has already learned, and this can also alter his mood.");
                 System.out.println("6. STAN does not know the user's name at first, but you can tell him it and he will remember it.");
+
+                continue;
             }
 
             if(input.equals("learn")){
-                stanLearns();
+
+                System.out.println("What kind of word are you teaching me, a good or bad adjective?");
+                Scanner sc1 = new Scanner(System.in);
+                String goodOrBad = sc1.nextLine();
+
+                if(goodOrBad.contains("good") || goodOrBad.contains("Good") 
+                && !goodOrBad.contains("bad") || !goodOrBad.contains("Bad")){
+                    //Fix this
+                    System.out.println("Type in the word so I can learn it!");
+                    Scanner sc2 = new Scanner(System.in);
+                    String goodWord = sc2.nextLine();
+                    goodWord = goodWord.toLowerCase();
+                    PrintWriter goodAdjWriter = new PrintWriter(new FileWriter("GoodAdjectives.rtf", true));
+                    goodAdjWriter.write("\n"+goodWord);
+                    goodAdjWriter.close();
+                    System.out.println();
+                    System.out.println("Sweet! Now I have more knowledge...");
+                    continue;
+                }
+                else if(goodOrBad.contains("bad") || goodOrBad.contains("Bad")
+                && !goodOrBad.contains("good") || !goodOrBad.contains("Good")){
+
+                    System.out.println("Type in the word so I can learn it!");
+                    Scanner sc2 = new Scanner(System.in);
+                    String badWord = sc2.nextLine();
+                    badWord = badWord.toLowerCase();
+                    PrintWriter badAdjWriter = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
+                    badAdjWriter.write("\n"+badWord);
+                    badAdjWriter.close();
+                    System.out.println();
+                    System.out.println("Sweet! Now I have more knowledge...");
+                    continue;
+
+                }
+                else{
+                    System.out.println("What? I'm going to start over that was confusing.");
+                    stanLearns();
+                }
             }
 
             if (input.equals("Flip a coin") || input.equals("flip a coin") || input.equals("Flip a coin!")
@@ -506,7 +515,7 @@ public class Stan {
                         System.out.println();
                     }
                 }
-             }
+            }
 
              if(input.contains("When") || input.contains("when")){
 
@@ -535,7 +544,7 @@ public class Stan {
                         System.out.println();
                     }
                 }
-             }
+            }
 
              if(input.contains("Where") || input.contains("where")){
 
@@ -843,11 +852,36 @@ public class Stan {
                         }
                 }
                 //Writes a random greeting
-                Random random = new Random();
-                int index = random.nextInt(greetingArray.length);
-                responseWrite.write(greetingArray[index]);
-                responseWrite.close();
-                System.out.println("");
+                if(stanKnowsYourName()){
+
+                    String[] greetingArray = new String[]
+                    {"Hi "+ usersName + "!", "Salutations", 
+                    "Hi! How are you feeling "+ usersName + "?", 
+                    "Howdy " + usersName + "!",
+                    "Hello!", 
+                    "Hey "+ usersName + " it's STAN here!", 
+                    "Heyyyyyyyy!", 
+                    "Hello " + usersName + "!", 
+                    "Hello fellow robot!"};
+
+                    Random random = new Random();
+                    int index = random.nextInt(greetingArray.length);
+                    responseWrite.write(greetingArray[index]);
+                    responseWrite.close();
+                    System.out.println("");
+                }
+                else if(!stanKnowsYourName()){
+
+                    String[] greetingArray = new String[]{"Hi!", "Salutations", "Hi! How are you feeling?", "Howdy, what's your name?",
+                    "Hello!", "Hi! I'm STAN, what is your name?", "Heyyyyyyyy ;)", "Hello Stanger!", "Hello fellow robot!", "Greetings.",
+                    "Hello! Where am I?"};
+
+                    Random random = new Random();
+                    int index = random.nextInt(greetingArray.length);
+                    responseWrite.write(greetingArray[index]);
+                    responseWrite.close();
+                    System.out.println("");
+                }
 
             }
 
@@ -1140,7 +1174,7 @@ public class Stan {
 
 
             //Else for if he doesnt understand any possible input
-            else if(!input.equals("f")){
+            else if(!input.equals("f") || !input.equals("learn")){
 
                 if(stanIsHappy()){
                     String[] oneWordHappyResponses = new String[] {"Interesting!", "I see.", "Alrighty!", "Sweet.", "Well ok then!"};
@@ -1161,7 +1195,7 @@ public class Stan {
                     System.out.println();
                 }
                 else if(stanIsSad()){
-                    String[] oneWordSadResponses = new String[] {"...", "Ok... :(", "I don't want to respond to that... :(", "..."};
+                    String[] oneWordSadResponses = new String[] {"...", "Ok... :(", "I don't want to respond to that... :("};
                     Random random = new Random();
                     int index = random.nextInt(oneWordSadResponses.length);
                     String sResponse = oneWordSadResponses[index];
