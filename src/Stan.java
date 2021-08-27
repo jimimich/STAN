@@ -193,30 +193,38 @@ public class Stan {
     public static void stanLearns() throws IOException{
 
         System.out.println("What kind of word are you teaching me, a good or bad adjective?");
-        Scanner sc = new Scanner(System.in);
-        String goodOrBad = sc.nextLine();
+        Scanner sc1 = new Scanner(System.in);
+        System.out.println();
+        String goodOrBad = sc1.nextLine();
+        goodOrBad = goodOrBad.toLowerCase();
 
-        if(goodOrBad.contains("good") || goodOrBad.contains("Good")){
-            //Fix this
+        if(goodOrBad.contains("good") && !goodOrBad.contains("bad")){
+
+            System.out.println();
+            System.out.println();
             System.out.println("Type in the word so I can learn it!");
             Scanner sc2 = new Scanner(System.in);
+            System.out.println();
             String goodWord = sc2.nextLine();
             goodWord = goodWord.toLowerCase();
-           // BufferedWriter goodAdjWriter = new BufferedWriter(File "GoodAdjectives.rtf");
-           // goodAdjWriter.write(goodWord);
-           // goodAdjWriter.close();
+            PrintWriter goodAdjWriter = new PrintWriter(new FileWriter("GoodAdjectives.rtf", true));
+            goodAdjWriter.write("\n"+goodWord);
+            goodAdjWriter.close();
             System.out.println();
             System.out.println("Sweet! Now I have more knowledge...");
         }
-        else if(goodOrBad.contains("bad") || goodOrBad.contains("Bad")){
-
+        else if(goodOrBad.contains("bad") && !goodOrBad.contains("good")){
+            System.out.println();
+            System.out.println();
             System.out.println("Type in the word so I can learn it!");
             Scanner sc2 = new Scanner(System.in);
+            System.out.println();
             String badWord = sc2.nextLine();
+            System.out.println();
             badWord = badWord.toLowerCase();
-            PrintWriter goodAdjWriter = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
-            goodAdjWriter.write(badWord);
-            goodAdjWriter.close();
+            PrintWriter badAdjWriter = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
+            badAdjWriter.write("\n"+badWord);
+            badAdjWriter.close();
             System.out.println();
             System.out.println("Sweet! Now I have more knowledge...");
         }
@@ -255,29 +263,9 @@ public class Stan {
         File nameFile = new File("YourName.rtf"); 
         String usersName = nameReader.readLine();
 
-        //STAN Adjectives
-        String[] goodAdjectives = new String[]{"kind", "fun", "amazing", "sweet", "radical", "beneficial", "awesome",
-        "intellectual", "humble", "genuine", "trusting", "mindful", "astronomical", "logical", "joyful", "wonderful",
-        "chill", "relaxed", "smart", "intelligent", "funny", "cool", "beautiful", "nice"};
-        String[] badAdjectives = new String[]{"stupid", "awful", "smelly", "ugly", "rude", "disgusting", "corrupt",
-            "diabolical", "bad", "unfunny", "uncool", "trash", "trashy", "dumb", "unfunny", "disrespectful", "irresponsible",
-            "uncaring", "dreadful", "idiotic", "pussy", "weird"};
-
-        //STAN Sentence starts that go with adjectives
-        String[] niceStarters = new String[] {"Ok! That's very ", "You are very ", "Thanks! That's ", "To me, that appears "};
-        String[] madStarters = new String[] {"You are literally so ", "You're such an asshole, stop being so ", "I can't believe you're so ",
-        "You disgust me, and I'm literally a robot. You're also "};
-        //String[] sadStarters = new String[] {"Why would you say that? That's ", "Well ok :( that's ", "Well alright, that's "};
-
-        //Comments Stan can make
+        //Sad omments Stan can make
         String[] sadComments = new String[] {"Awww, I'm pretty sad now. :(", "Oh, ok :/", "That was rude :(", "Is that *sniff* all you got? :(",
         "Wow. I'm hurt. :/", "I'm just a robot, so I'm supposed to feel sad when you say things like that. :("};
-
-        //Could add an array of responses to "I am good today" or "I am bad today" also depending on if he's mad
-
-        //String[] confusedComments = new String[] {"I'm not sure I quite understan. Could you add more context?"}
-
-        //Array of comments for what kind of mood hes in, when you ask him how he is
 
         String[] ifHappyResponse = new String[] {"I'm dandy!", "I'm feeling great right now. ALl thanks to you! :)",
         "I'm great, thanks for asking!", "Very happy!", "I'm in a great mood right now!", "I'm good!"};
@@ -362,44 +350,8 @@ public class Stan {
             }
 
             if(input.equals("learn")){
-
-                System.out.println("What kind of word are you teaching me, a good or bad adjective?");
-                Scanner sc1 = new Scanner(System.in);
-                String goodOrBad = sc1.nextLine();
-
-                if(goodOrBad.contains("good") || goodOrBad.contains("Good") 
-                && !goodOrBad.contains("bad") || !goodOrBad.contains("Bad")){
-                    //Fix this
-                    System.out.println("Type in the word so I can learn it!");
-                    Scanner sc2 = new Scanner(System.in);
-                    String goodWord = sc2.nextLine();
-                    goodWord = goodWord.toLowerCase();
-                    PrintWriter goodAdjWriter = new PrintWriter(new FileWriter("GoodAdjectives.rtf", true));
-                    goodAdjWriter.write("\n"+goodWord);
-                    goodAdjWriter.close();
-                    System.out.println();
-                    System.out.println("Sweet! Now I have more knowledge...");
-                    continue;
-                }
-                else if(goodOrBad.contains("bad") || goodOrBad.contains("Bad")
-                && !goodOrBad.contains("good") || !goodOrBad.contains("Good")){
-
-                    System.out.println("Type in the word so I can learn it!");
-                    Scanner sc2 = new Scanner(System.in);
-                    String badWord = sc2.nextLine();
-                    badWord = badWord.toLowerCase();
-                    PrintWriter badAdjWriter = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
-                    badAdjWriter.write("\n"+badWord);
-                    badAdjWriter.close();
-                    System.out.println();
-                    System.out.println("Sweet! Now I have more knowledge...");
-                    continue;
-
-                }
-                else{
-                    System.out.println("What? I'm going to start over that was confusing.");
-                    stanLearns();
-                }
+                stanLearns();
+                continue;
             }
 
             if (input.equals("Flip a coin") || input.equals("flip a coin") || input.equals("Flip a coin!")
