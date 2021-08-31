@@ -54,10 +54,6 @@ public class Stan {
         fwOb.close();
     }
 
-    public static void learnAdjective(){
-
-    }
-
     //-------------------
 
     //Boolean methods to check STAN's mood-----------------
@@ -94,7 +90,7 @@ public class Stan {
             return false;
         }
     }
-
+    // Check if Stan knows your name
     public static Boolean stanKnowsYourName(){
         
         File file = new File("YourName.rtf");
@@ -152,7 +148,7 @@ public class Stan {
         try {
             Scanner scanner = new Scanner(file);
 
-        //now read the file line by line...
+        //Reads the file line by line
             int lineNum = 0;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -162,7 +158,7 @@ public class Stan {
                 }
             }
         } catch(FileNotFoundException e) { 
-            //handle this
+            System.out.println("Error... Resetting.");
         }
         return known;
     }
@@ -175,7 +171,7 @@ public class Stan {
         try {
             Scanner scanner = new Scanner(file);
 
-        //now read the file line by line...
+        //Reads file line by line
             int lineNum = 0;
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -185,7 +181,7 @@ public class Stan {
                 }
             }
         } catch(FileNotFoundException e) { 
-            //handle this
+            System.out.println("Error... Resetting.");
         }
         return known;
     }
@@ -256,6 +252,42 @@ public class Stan {
         return response;
         
     }
+    //Checks if the user is friends with stan
+    public static Boolean weAreFriends() throws IOException{
+
+        BufferedReader friendReader = new BufferedReader(new FileReader("FriendOrNot.rtf"));
+        String reader = friendReader.readLine();
+        friendReader.close();
+        if(reader.equals("Friend")){
+            return true;
+        }
+        else if(reader.equals("Not")){
+            return false;
+        }
+        else{
+            return false;
+        }
+    }
+    //Void method to make the user and stan friends
+    public static void makeStanFriends() throws IOException{
+
+        FileWriter fwOb = new FileWriter("FriendOrNot.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.write("Friend");
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+    }
+    //Void method to make the user lose friendships with the user
+    public static void loseFriendship() throws IOException{
+
+        FileWriter fwOb = new FileWriter("FriendOrNot.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.write("Not");
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+    }
 
     public static void main(String[] args) throws IOException{
 
@@ -286,6 +318,7 @@ public class Stan {
         System.out.println("     `---''---`");
         System.out.println("");
         System.out.println("S.T.A.N. (Social Terminal Artifical Network)");
+        System.out.println("Your Personal Friend!");
         System.out.println("");
         System.out.println("Say Hello, press f to see STAN's features, or press 0 to quit.");
         System.out.println("");
@@ -330,7 +363,11 @@ public class Stan {
             //from these files. If they are words or phrases in a category that won't change, I can store it in an array and pick 
             //randomly from it.
 
-            //For the future, I could have STAN doing things depending on how he feels
+            //Could have stan like and dislikes, and user likes and dislikes. Could then also make
+            //a file of shared likes and shared dislikes. Possibly have a way for it to autimatically
+            //generate its own file?
+
+
 
             //To Quit
             if (input.equals("0")){
@@ -761,7 +798,7 @@ public class Stan {
                     System.out.println("");
                     makeStanHappy();
                 }
-                //Writes a random greeting
+                //Writes a random greeting if he knows your name
                 if(stanKnowsYourName()){
 
                     String[] greetingArray = new String[]
@@ -780,6 +817,7 @@ public class Stan {
                     responseWrite.close();
                     System.out.println("");
                 }
+                //If he does not know your name
                 else if(!stanKnowsYourName()){
 
                     String[] greetingArray = new String[]{"Hi!", "Salutations", "Hi! How are you feeling?", "Howdy, what's your name?",
@@ -844,6 +882,8 @@ public class Stan {
                     }
 
                 }
+                //Add a noun class. Separate two text files into nouns he likes or dislikes. You can use these to describe
+                //him as well.
 
                 //if the input is a compliment
                 if(stanKnowsGoodAdjective(input)){
@@ -856,6 +896,24 @@ public class Stan {
                     makeStanHappy();
 
                     //-----------------------------------------------------------------
+                }
+                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input)){
+                    System.out.println();
+                    System.out.println("I didn't understand that adjective... would you want to tech me it?");
+                    Scanner scYON = new Scanner(System.in);
+                    String yesOrNo = scYON.nextLine();
+                    System.out.println();
+                    System.out.println();
+
+                    if(yesOrNo.contains("y") || yesOrNo.contains("Y")){
+                        stanLearns();
+                        continue;
+                    }
+                    else{
+                        System.out.println("Nevermind...");
+                        System.out.println();
+                        continue;
+                    }
                 }
                 // else statement to learn adjectives it hasn't heard before
 
@@ -1035,7 +1093,9 @@ public class Stan {
             else if(!input.equals("f") || !input.equals("learn")){
 
                 if(stanIsHappy()){
-                    String[] oneWordHappyResponses = new String[] {"Interesting!", "I see.", "Alrighty!", "Sweet.", "Well ok then!"};
+                    String randomGoodAdj = pickGoodAdjective();
+                    String[] oneWordHappyResponses = new String[] {"That is "+ randomGoodAdj + "!", 
+                    randomGoodAdj.substring(0, 1).toUpperCase() + randomGoodAdj.substring(1)+ "!"};
                     Random random = new Random();
                     int index = random.nextInt(oneWordHappyResponses.length);
                     String sResponse = oneWordHappyResponses[index];
