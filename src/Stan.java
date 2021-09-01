@@ -193,7 +193,6 @@ public class Stan {
 
         System.out.println("What kind of word are you teaching me, a good or bad adjective?");
         Scanner sc1 = new Scanner(System.in);
-        System.out.println();
         String goodOrBad = sc1.nextLine();
         goodOrBad = goodOrBad.toLowerCase();
 
@@ -203,12 +202,12 @@ public class Stan {
             System.out.println();
             System.out.println("Type in the word so I can learn it!");
             Scanner sc2 = new Scanner(System.in);
-            System.out.println();
             String goodWord = sc2.nextLine();
             goodWord = goodWord.toLowerCase();
             PrintWriter goodAdjWriter = new PrintWriter(new FileWriter("GoodAdjectives.rtf", true));
             goodAdjWriter.write("\n"+goodWord);
             goodAdjWriter.close();
+            System.out.println();
             System.out.println();
             System.out.println("Sweet! Now I have more knowledge...");
         }
@@ -217,13 +216,13 @@ public class Stan {
             System.out.println();
             System.out.println("Type in the word so I can learn it!");
             Scanner sc2 = new Scanner(System.in);
-            System.out.println();
             String badWord = sc2.nextLine();
             System.out.println();
             badWord = badWord.toLowerCase();
             PrintWriter badAdjWriter = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
             badAdjWriter.write("\n"+badWord);
             badAdjWriter.close();
+            System.out.println();
             System.out.println();
             System.out.println("Sweet! Now I have more knowledge...");
         }
@@ -321,6 +320,10 @@ public class Stan {
         fwOb.close();
     }
 
+    public static void factoryReset(){
+
+    }
+
     public static void main(String[] args) throws IOException{
 
         BufferedReader nameReader = new BufferedReader(new FileReader("YourName.rtf"));
@@ -414,6 +417,8 @@ public class Stan {
             }
 
             if(input.equals("f")){
+                System.out.println("Console:");
+                System.out.println();
                 System.out.println("STAN's Features:");
                 System.out.println("1. You can have basic conversation with STAN, including things like greetings or how he's feeling.");
                 System.out.println("2. You can use adjectives to describe STAN, either good or bad. This can affect his mood.");
@@ -421,6 +426,8 @@ public class Stan {
                 System.out.println("4. STAN can learn good and bad adjectives from you, and use them in his own language.");
                 System.out.println("5. STAN also knows when you call him adjectives he has already learned, and this can also alter his mood.");
                 System.out.println("6. STAN does not know the user's name at first, but you can tell him it and he will remember it.");
+                System.out.println("7. Repeatedly being kind to Stan will cause you to eventually gain friendship with him!");
+                System.out.println("8. Repeatedly being mean to Stan will cause you to eventually lose friendship with him!");
 
                 continue;
             }
@@ -804,8 +811,6 @@ public class Stan {
                     makeStanHappy();
     
                 }
-                //Possibly add a streak feature, which would be a counter that goes up when you are nice to stan,
-                //and down when you are mean. This can determine a friendship status.
 
                 //If the greeting is mean
                 if(stanKnowsBadAjective(input)){
@@ -837,6 +842,7 @@ public class Stan {
                     System.out.println("");
                     makeStanHappy();
                 }
+                
                 //Writes a random greeting if he knows your name
                 if(stanKnowsYourName()){
 
@@ -936,8 +942,7 @@ public class Stan {
 
                     //-----------------------------------------------------------------
                 }
-                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("how are you")
-                && !input.contains("How are you")){
+                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("are you")){
                     System.out.println();
                     System.out.println("I didn't understand that adjective... would you want to teach me it?");
                     Scanner scYON = new Scanner(System.in);
@@ -951,7 +956,6 @@ public class Stan {
                     }
                     else{
                         System.out.println("Nevermind...");
-                        System.out.println();
                         continue;
                     }
                 }
