@@ -34,6 +34,7 @@ public class Stan {
         pwOb.flush();
         pwOb.close();
         fwOb.close();
+        addToStreak();
     }
     public static void makeStanSad() throws IOException{
         //Clears file
@@ -42,7 +43,8 @@ public class Stan {
         pwOb.write("Sad");
         pwOb.flush();
         pwOb.close();
-        fwOb.close();     
+        fwOb.close();  
+        takeFromStreak();   
     }
     public static void makeStanMad() throws IOException{
         //Clears file
@@ -52,6 +54,7 @@ public class Stan {
         pwOb.flush();
         pwOb.close();
         fwOb.close();
+        takeFromStreak();
     }
 
     //-------------------
@@ -229,7 +232,7 @@ public class Stan {
             stanLearns();
         }
     }
-
+    //Formulates a random happy response
     public static String formulateHappyResponse() throws IOException{
 
         String[] niceStarters = new String[] {"Ok! That's very ", "You are very ", "Thanks! That's ", "To me, that appears "};
@@ -240,10 +243,9 @@ public class Stan {
         return response;
 
     }
-
+    //Formulates a random angry response
     public static String formulateMadResponse() throws IOException{
         
-
         String[] madStarters = new String[] {"You are literally so ", "You're such an asshole, stop being so ", "I can't believe you're so ",
         "You disgust me, and I'm literally a robot. You're also "};
         Random random = new Random();
@@ -288,6 +290,36 @@ public class Stan {
         pwOb.close();
         fwOb.close();
     }
+    //Reads the NiceStreak file
+    public static int readStreak() throws IOException{
+        BufferedReader streakReader = new BufferedReader(new FileReader("NiceStreak.rtf"));
+        String streak = streakReader.readLine();
+        return Integer.parseInt(streak);
+    }
+    //Adds to nice streak
+    public static void addToStreak() throws IOException{
+
+        int s = readStreak() + 1;
+        String streak = String.valueOf(s);
+        FileWriter fwOb = new FileWriter("NiceStreak.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.write(streak);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+    }
+    //Takes from nice streak
+    public static void takeFromStreak() throws IOException{
+
+        int s = readStreak() - 1;
+        String streak = String.valueOf(s);
+        FileWriter fwOb = new FileWriter("NiceStreak.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.write(streak);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+    }
 
     public static void main(String[] args) throws IOException{
 
@@ -307,12 +339,12 @@ public class Stan {
         "I don't know, I don't want to talk about it...", "I feel gloomy and not ready to do anything...", 
         "I don't know... what is this feeling? It makes me want to sit here and do nothing and be quiet."};
 
-        System.out.println(" __");
-        System.out.println(" _([    |@@|");
+        System.out.println(" ");
+        System.out.println(" _()    |@@|");
         System.out.println("(__/[__ [--/ __");
         System.out.println("   |___|----|  |   __");
         System.out.println("       { }{ /| )_ / _ ");
-        System.out.println("       /|__/| |__O (__");
+        System.out.println("       /|__/| |___ (__");
         System.out.println("      (--/[--)    (__/");
         System.out.println("      _)(  )(_");
         System.out.println("     `---''---`");
@@ -324,6 +356,13 @@ public class Stan {
         System.out.println("");
 
         while(true){
+
+            if(readStreak() >= 6){
+                makeStanFriends();
+            }
+            else if(readStreak() <= 0){
+                loseFriendship();
+            }
             
             //Initializes the writer and reader
             PrintWriter responseWrite = new PrintWriter(new FileWriter("Response.rtf", true));
@@ -897,9 +936,10 @@ public class Stan {
 
                     //-----------------------------------------------------------------
                 }
-                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input)){
+                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("how are you")
+                && !input.contains("How are you")){
                     System.out.println();
-                    System.out.println("I didn't understand that adjective... would you want to tech me it?");
+                    System.out.println("I didn't understand that adjective... would you want to teach me it?");
                     Scanner scYON = new Scanner(System.in);
                     String yesOrNo = scYON.nextLine();
                     System.out.println();
@@ -1075,16 +1115,30 @@ public class Stan {
 
                 if(input.contains("not") || input.contains("arent") || input.contains("aren't")){
 
-                    responseWrite.write("You are " + pickBadAdjective() + "! I thought we were great friends.");
-                    responseWrite.close();
-                    System.out.println();
-                    makeStanMad();
+                    if(weAreFriends()){
+                        responseWrite.write("You are " + pickBadAdjective() + "! I thought we were great friends.");
+                        responseWrite.close();
+                        System.out.println();
+                        makeStanMad();
+                    }
+                    else if (!weAreFriends()){
+                        responseWrite.write("That is true. Our interaction hasn't been strong overall.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
                 }
                 else{
-                    responseWrite.write("You are so " + pickGoodAdjective() + "! We are great friends.");
-                    responseWrite.close();
-                    System.out.println();
-                    makeStanHappy();
+                    if(weAreFriends()){
+                        responseWrite.write("You are so " + pickGoodAdjective() + "! We are great friends.");
+                        responseWrite.close();
+                        System.out.println();
+                        makeStanHappy();
+                    }
+                    else if (!weAreFriends()){
+                        responseWrite.write("I'm not sure... our interaction hasn't been strong overall.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
                 }
             }
 
