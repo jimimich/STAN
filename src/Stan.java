@@ -941,7 +941,8 @@ public class Stan {
 
                     //-----------------------------------------------------------------
                 }
-                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("are you")){
+                else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("are you") 
+                && !input.contains("were you")){
                     System.out.println();
                     System.out.println("I didn't understand that adjective... would you want to teach me it?");
                     Scanner scYON = new Scanner(System.in);
