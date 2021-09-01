@@ -57,7 +57,7 @@ public class Stan {
         takeFromStreak();
     }
 
-    //-------------------
+    //------------------------------------------------------
 
     //Boolean methods to check STAN's mood-----------------
     public static Boolean stanIsHappy() throws IOException{
@@ -107,11 +107,9 @@ public class Stan {
     }
     //---------------------------------------
 
-    //Possibly create a boolean method that checks if the input is in a textfile
-    //Possibly create a method that randomly chooses from either a database of learned adjectives or adjectives already
-    //stored into a preset array and outputs that word of a string...
+    //Possibly create a method that erases all data, and STAN forgets all his databases...(factoryReset())
 
-    //Possibly create a method that erases all data, and STAN forgets all his databases...
+    //Possibly create a way to perform activities with Stan. Will give an extra boost to the niceStreak.
 
     public static String pickGoodAdjective() throws IOException{
 
@@ -321,7 +319,7 @@ public class Stan {
     }
 
     public static void factoryReset(){
-
+        //Set stan to his original settings
     }
 
     public static void main(String[] args) throws IOException{
@@ -351,7 +349,7 @@ public class Stan {
         System.out.println("      (--/[--)    (__/");
         System.out.println("      _)(  )(_");
         System.out.println("     `---''---`");
-        System.out.println("");
+        //System.out.println("");
         System.out.println("S.T.A.N. (Social Terminal Artifical Network)");
         System.out.println("Your Personal Friend!");
         System.out.println("");
@@ -423,11 +421,12 @@ public class Stan {
                 System.out.println("1. You can have basic conversation with STAN, including things like greetings or how he's feeling.");
                 System.out.println("2. You can use adjectives to describe STAN, either good or bad. This can affect his mood.");
                 System.out.println("3. STAN can either be happy, sad, or mad. His mood can sometimes change the way he responds to you.");
-                System.out.println("4. STAN can learn good and bad adjectives from you, and use them in his own language.");
-                System.out.println("5. STAN also knows when you call him adjectives he has already learned, and this can also alter his mood.");
+                System.out.println("4. STAN can recognize when he does not know an adjective, learn them from you, and use them in his own language.");
+                System.out.println("5. STAN also knows when you describe him with adjectives he has already learned from you, and this can also alter his mood.");
                 System.out.println("6. STAN does not know the user's name at first, but you can tell him it and he will remember it.");
                 System.out.println("7. Repeatedly being kind to Stan will cause you to eventually gain friendship with him!");
                 System.out.println("8. Repeatedly being mean to Stan will cause you to eventually lose friendship with him!");
+                System.out.println("9. Friendship status with Stan can add more diversity to his dialogue!");
 
                 continue;
             }
@@ -986,8 +985,63 @@ public class Stan {
             }
 
             //If the input says something about themselves...
+            //I am... (check for good or bad adjectives)
+            // I like... (possibly start with nouns here) (if youre friends with him he will share that like as well)
             if(input.contains("I ") || input.contains("i ")){
 
+                //Calling yourself something (Adjective)
+                if(input.contains("am") && !input.contains("a ")){
+
+                    //If you describe yourself with a good adjective
+                    if(stanKnowsGoodAdjective(input)){
+
+                        if(weAreFriends() && stanIsHappy()){
+                            responseWrite.write("I agree with that! You are nothing but " + pickGoodAdjective() + "!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else if (weAreFriends() && stanIsMad() || weAreFriends() && stanIsSad()){
+                            responseWrite.write("Sure whatever, I guess I agree. But you've been pretty " + pickBadAdjective() +
+                            " to me lately!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else if(!weAreFriends() && stanIsHappy()){
+                            responseWrite.write("Well I don't know you too well yet, but I wouldn't doubt it!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else if (!weAreFriends() && stanIsMad() || !weAreFriends() && stanIsSad()){
+                            responseWrite.write("I doubt it, you're kind of " + pickBadAdjective() + ".");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                    }
+                    //If you describe yourself with a bad adjective
+                    if(stanKnowsBadAjective(input)){
+
+                        if(weAreFriends() && stanIsHappy()){
+                            responseWrite.write("That can't be true! You have been nothing but " + pickGoodAdjective() + "!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else if (weAreFriends() && stanIsMad() || weAreFriends() && stanIsSad()){
+                            responseWrite.write("Well that's a little harsh, but you have been rude to me lately.");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else if(!weAreFriends() && stanIsHappy()){
+                            responseWrite.write("Well I don't know you too well yet, so don't sell yourself short! :)");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        else if (!weAreFriends() && stanIsMad() || !weAreFriends() && stanIsSad()){
+                            responseWrite.write("I agree with that. You are really " + pickBadAdjective() + ".");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                    }
+                }
             }
 
             //If the input is i dont care and STAN said something mean before
