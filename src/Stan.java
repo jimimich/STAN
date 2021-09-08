@@ -325,13 +325,19 @@ public class Stan {
     public static void learnNoun() throws IOException{
         //To get the name of the noun
         System.out.println();
-        System.out.println("What is this thing called?");
+        System.out.println("What is this thing called? (Singular)");
         Scanner sc1 = new Scanner(System.in);
         String nounName = sc1.nextLine();
         nounName = nounName.toLowerCase();
+        if(nounName.contains("a ")){
+            nounName = nounName.replace("a ", "");
+        } 
+        if(nounName.contains("A ")){
+            nounName = nounName.replace("A ", "");
+        }
         System.out.println();
         //To get a brief description
-        System.out.println("Can you give me a brief description of this thing?");
+        System.out.println("Give me a brief description of this thing!");
         Scanner sc2 = new Scanner(System.in);
         String descripton = sc2.nextLine();
         descripton = descripton.toLowerCase();
@@ -1187,22 +1193,49 @@ public class Stan {
             if(input.contains("I love you") && !stanIsMad() && !stanIsSad()
             || input.contains("i love you") && !stanIsMad() && !stanIsSad()){
 
-                responseWrite.write("I love you too! " + formulateHappyResponse());
-                responseWrite.close();
-                System.out.println("");
-                makeStanHappy();
+                if(weAreFriends()){
+                    responseWrite.write("I love you too! " + formulateHappyResponse());
+                    responseWrite.close();
+                    System.out.println("");
+                    makeStanHappy();
+                }
+                if(!weAreFriends()){
+                    responseWrite.write("Haha, thanks, but I don't really know you!");
+                    responseWrite.close();
+                    System.out.println("");
+                    makeStanHappy();
+                }
                 
             }
             else if (input.contains("I love you") && stanIsMad()|| input.contains("i love you") && stanIsMad()){
-                responseWrite.write("Shut up! You are literally so annoying!");
-                responseWrite.close();
-                System.out.println();
+
+                if(weAreFriends()){
+                    responseWrite.write("You've been " + pickBadAdjective() + ", but that's sweet, I forgive you.");
+                    responseWrite.close();
+                    System.out.println();
+                    makeStanHappy();
+                }
+                if(!weAreFriends()){
+                    responseWrite.write("Shut up! You are literally so annoying!");
+                    responseWrite.close();
+                    System.out.println();
+                    makeStanMad();
+                }
             }
             else if(input.contains("I love you") && stanIsSad()|| input.contains("i love you") && stanIsSad()){
-                responseWrite.write("Thanks. Well, I guess that makes me feel better. :)");
-                responseWrite.close();
-                System.out.println();
-                makeStanHappy();
+
+                if(weAreFriends()){
+                    responseWrite.write("Thanks. Well, I guess that makes me feel better. :)");
+                    responseWrite.close();
+                    System.out.println();
+                    makeStanHappy();
+                }
+                if(!weAreFriends()){
+                    responseWrite.write("That's " + pickBadAdjective() + "... I don't really know you that well. :(");
+                    responseWrite.close();
+                    System.out.println();
+                    makeStanHappy();
+                }
             }
 
             //If the input says something about themselves...
@@ -1261,6 +1294,101 @@ public class Stan {
                             responseWrite.close();
                             System.out.println();
                         }
+                    }
+                }
+                //If the user is saying they like a noun
+                else if(input.contains("like ") && !input.contains("to ") && !input.contains("ing")
+                || input.contains("love ") && !input.contains("to ") && !input.contains("ing")){
+
+                    if(stanKnowsNoun(input)){
+
+                        if(stanLikesNoun(input)){
+                            responseWrite.write("Hey, that's " + pickGoodAdjective() + ". I like that too!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                        if(!stanLikesNoun(input)){
+                            responseWrite.write("I disagree, but that is " + pickGoodAdjective() + " that you like it!");
+                            responseWrite.close();
+                            System.out.println();
+                        }
+                    }
+                    if(!stanKnowsNoun(input)){
+
+                        //Code before learnNoun() method, to make sure the user wants to teach stan
+                        System.out.println("I didn't recognize that noun you used, would you like to teach it to me?");
+                        Scanner scan = new Scanner(System.in);
+                        String yesOrNo = scan.nextLine();
+                        if(yesOrNo.toLowerCase().contains("no")){
+                            System.out.println();
+                            System.out.println("Oh ok nevermind...");
+                            continue;
+                        }
+                        //--------------------------------------------------------------------
+                        learnNoun();
+                        continue;
+                    }
+                }
+                //If user is saying they like to do something
+                else if(input.contains("like ") && input.contains("to ") || input.contains("like ") && input.contains("ing")
+                || input.contains("love ") && !input.contains("to ") || input.contains("love ") && !input.contains("ing")){
+
+                    if(stanIsHappy()){
+                        responseWrite.write("That sounds interesting! It's " + pickGoodAdjective() + " that you like to do that.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    if(stanIsMad()){
+                        responseWrite.write("I don't care, that sounds " + pickGoodAdjective() + ". If you can't tell, I'm in a bad mood.");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                    if(stanIsSad()){
+                        responseWrite.write("Oh.... cool :(");
+                        responseWrite.close();
+                        System.out.println();
+                    }
+                }
+                else if(input.contains(" a ") || input.contains(" an ")){
+
+                    if(stanKnowsNoun(input)){
+
+                        if(weAreFriends()){
+                                
+                            if(stanLikesNoun(input)){
+                                responseWrite.write("Haha, you're " + pickGoodAdjective() + "! I agree!");
+                                responseWrite.close();
+                            }
+                            if(!stanLikesNoun(input)){
+                                responseWrite.write("That is " + pickBadAdjective() + "! I disagree!");
+                                responseWrite.close();
+                            }
+                        }
+                        if(!weAreFriends()){
+
+                            if(stanLikesNoun(input)){
+                                responseWrite.write("I guess... whatever you say!");
+                                responseWrite.close();
+                            }
+                            if(!stanLikesNoun(input)){
+                                responseWrite.write("Well I don't know you too well, but that's probably not the case!");
+                                responseWrite.close();
+                            }
+                        }
+                    }
+                    if(!stanKnowsNoun(input)){
+                        //Code before learnNoun() method, to make sure the user wants to teach stan
+                        System.out.println("I didn't recognize that noun you used, would you like to teach it to me?");
+                        Scanner scan = new Scanner(System.in);
+                        String yesOrNo = scan.nextLine();
+                        if(yesOrNo.toLowerCase().contains("no")){
+                            System.out.println();
+                            System.out.println("Oh ok nevermind...");
+                            continue;
+                        }
+                        //--------------------------------------------------------------------
+                        learnNoun();
+                        continue;
                     }
                 }
             }
