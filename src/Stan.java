@@ -1271,6 +1271,127 @@ public class Stan {
                             System.out.println();
                         }
                     }
+                    else if(input.contains("happy")){
+
+                        if(stanIsMad()){
+
+                            if(weAreFriends()){
+                                responseWrite.write("Well since we are friends I'm happy for you, but you made me mad!.");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Wowww cool I don't care. You made me mad.");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                        }
+                        else{
+                            if(weAreFriends()){
+                                responseWrite.write("That's great to hear, I'm happy for you!");
+                                responseWrite.close();
+                                System.out.println();
+                                makeStanHappy();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Haha I don't know you too well, but good to hear!");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                        }
+
+            
+                    }
+                    else if(input.contains("mad")){
+
+                        if(stanIsMad()){
+
+                            if(weAreFriends()){
+                                responseWrite.write("Well I am too, thanks to you!");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Shut up, I don't care!");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+
+                        }
+                        if(stanIsHappy()){
+
+                            if(weAreFriends()){
+                                responseWrite.write("Why are you mad? Can I cheer you up? :(");
+                                responseWrite.close();
+                                System.out.println();
+                                makeStanSad();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Ok? I don't know you too well, what do I do with this info.");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                        }
+                        if(stanIsSad()){
+
+                            if(weAreFriends()){
+                                responseWrite.write("Oh no... please don't yell at me. :(");
+                                responseWrite.close();
+                                System.out.println();
+                                makeStanSad();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Please stop, you're scaring me. :(");
+                                responseWrite.close();
+                                System.out.println();
+                                makeStanSad();
+                            }
+                        }
+                        
+                    }
+                    else if(input.contains("sad")){
+
+                        if(stanIsMad()){
+
+                            if(weAreFriends()){
+                                responseWrite.write("Suck it up, you'll get over it you " + pickBadAdjective() + " human.");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Well suck it up! You are so " + pickBadAdjective() + "!" );
+                                responseWrite.close();
+                                System.out.println();
+                            }
+
+                        }
+                        if(stanIsHappy()){
+                            if(weAreFriends()){
+                                responseWrite.write("Oh no! I'm sorry I hope you feel better. :(");
+                                responseWrite.close();
+                                System.out.println();
+                                makeStanSad();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("I don't know you well, but I hope things get better!");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                        }
+                        if(stanIsSad()){
+                            if(weAreFriends()){
+                                responseWrite.write("Me too, but it'll be ok. We have each other. :)");
+                                responseWrite.close();
+                                System.out.println();
+                                makeStanHappy();
+                            }
+                            if(!weAreFriends()){
+                                responseWrite.write("Please stop bothering me, I don't really know you. :(");
+                                responseWrite.close();
+                                System.out.println();
+                            }
+                        }
+                    }
                     //If you describe yourself with a bad adjective
                     if(stanKnowsBadAjective(input)){
 
