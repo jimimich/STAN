@@ -1121,10 +1121,8 @@ public class Stan {
                     }
                 }
 
-                //Still need to add a youre welcome case...
-
                 //if the input is a compliment
-                if(stanKnowsGoodAdjective(input)){
+                if(stanKnowsGoodAdjective(input) && !input.contains("welcome")){
                 
                     //Code for STAN to say a nice comment-------------------------------
                     
@@ -1138,7 +1136,7 @@ public class Stan {
                 else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("are you") 
                 && !input.contains("were you") && !input.contains(" you") && !input.contains("youre") 
                 && !input.contains("you're") && !input.contains("Youre") && !input.contains("You're")
-                && !input.contains(" a ")){
+                && !input.contains(" a ") && !input.contains("welcome")){
                     System.out.println();
                     System.out.println("I didn't understand that adjective... would you want to teach me it?");
                     Scanner scYON = new Scanner(System.in);
