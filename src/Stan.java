@@ -534,6 +534,9 @@ public class Stan {
             else if(readStreak() <= 0){
                 loseFriendship();
             }
+            else if(readStreak() <= -40){
+                factoryReset();
+            }
             
             //Initializes the writer and reader
             PrintWriter responseWrite = new PrintWriter(new FileWriter("Response.rtf", true));
@@ -1347,7 +1350,6 @@ public class Stan {
                                 makeStanSad();
                             }
                         }
-                        
                     }
                     else if(input.contains("sad")){
 
@@ -1569,6 +1571,26 @@ public class Stan {
                 responseWrite.write("For what?? :(");
                 responseWrite.close();
                 System.out.println("");
+            }
+
+            if(input.contains("You're welcome") || input.contains("Youre welcome") || input.contains("you're welcome")
+            || input.contains("youre welcome") || input.contains("You are welcome") || input.contains("you are welcome")){
+
+                if(stanIsHappy()){
+                    responseWrite.write(":)");
+                    responseWrite.close();
+                    System.out.println("");
+                }
+                if(stanIsMad()){
+                    responseWrite.write("You are annoying.");
+                    responseWrite.close();
+                    System.out.println("");
+                }
+                if(stanIsSad()){
+                    responseWrite.write("Welcome for what? :(");
+                    responseWrite.close();
+                    System.out.println("");
+                }
             }
 
             if(input.contains("I hate you") || input.contains("i hate you")){
