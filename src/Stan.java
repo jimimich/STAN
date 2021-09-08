@@ -488,8 +488,120 @@ public class Stan {
         return description;
     }
 
-    public static void factoryReset(){
-        //Set stan to his original settings
+    public static void resetBadAdjectiveFile() throws IOException{
+        FileWriter fwOb = new FileWriter("BadAdjectives.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+
+        PrintWriter badAdjReset = new PrintWriter(new FileWriter("BadAdjectives.rtf", true));
+        badAdjReset.write("stupid");
+        badAdjReset.write("\n" + "awful");
+        badAdjReset.write("\n" + "smelly");
+        badAdjReset.write("\n" + "ugly");
+        badAdjReset.write("\n" + "rude");
+        badAdjReset.write("\n" + "disgusting");
+        badAdjReset.write("\n" + "corrupt");
+        badAdjReset.write("\n" + "diabolical");
+        badAdjReset.write("\n" + "bad");
+        badAdjReset.write("\n" + "unfunyy");
+        badAdjReset.write("\n" + "uncool");
+        badAdjReset.write("\n" + "trashy");
+        badAdjReset.write("\n" + "dumb");
+        badAdjReset.write("\n" + "unfunny");
+        badAdjReset.write("\n" + "disrespectful");
+        badAdjReset.write("\n" + "irresponsible");
+        badAdjReset.write("\n" + "uncaring");
+        badAdjReset.write("\n" + "dreadful");
+        badAdjReset.write("\n" + "idiotic");
+        badAdjReset.write("\n" + "weird");
+        badAdjReset.write("\n" + "unworthy");
+        badAdjReset.write("\n" + "annoying");
+        badAdjReset.close();
+    }
+
+    public static void resetGoodAdjectiveFile() throws IOException{
+        FileWriter fwOb = new FileWriter("GoodAdjectives.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+
+        PrintWriter goodAdjReset = new PrintWriter(new FileWriter("GoodAdjectives.rtf", true));
+        goodAdjReset.write("kind");
+        goodAdjReset.write("\n" + "fun");
+        goodAdjReset.write("\n" + "amazing");
+        goodAdjReset.write("\n" + "sweet");
+        goodAdjReset.write("\n" + "radical");
+        goodAdjReset.write("\n" + "beneficial");
+        goodAdjReset.write("\n" + "awesome");
+        goodAdjReset.write("\n" + "intellectual");
+        goodAdjReset.write("\n" + "humble");
+        goodAdjReset.write("\n" + "genuine");
+        goodAdjReset.write("\n" + "trusting");
+        goodAdjReset.write("\n" + "mindful");
+        goodAdjReset.write("\n" + "logical");
+        goodAdjReset.write("\n" + "joyful");
+        goodAdjReset.write("\n" + "wonderful");
+        goodAdjReset.write("\n" + "chill");
+        goodAdjReset.write("\n" + "relaxed");
+        goodAdjReset.write("\n" + "smart");
+        goodAdjReset.write("\n" + "intelligent");
+        goodAdjReset.write("\n" + "funny");
+        goodAdjReset.write("\n" + "cool");
+        goodAdjReset.write("\n" + "beautiful");
+        goodAdjReset.write("\n" + "nice");
+        goodAdjReset.write("\n" + "cute");
+        goodAdjReset.write("\n" + "good");
+        goodAdjReset.close();
+    }
+
+    public static void clearKnownNouns() throws IOException{
+        FileWriter fwOb = new FileWriter("KnownNouns.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+
+        FileWriter fwOb2 = new FileWriter("RespectiveNounDescriptions.rtf", false); 
+        PrintWriter pwOb2 = new PrintWriter(fwOb2, false);
+        pwOb2.flush();
+        pwOb2.close();
+        fwOb2.close();
+    }
+
+    public static void forgetUserName() throws IOException{
+        FileWriter fwOb = new FileWriter("YourName.rtf", false); 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.flush();
+        pwOb.close();
+        fwOb.close();
+    }
+    //Reset STAN to original settings
+    public static void factoryReset() throws IOException{
+        
+        clearResponseFile();
+        makeStanHappy();
+
+        //Sets nicestreak to 0-----------
+        while(readStreak() < 0){
+            addToStreak();
+            if(readStreak() == 0){
+                break;
+            }
+        }
+        while(readStreak() > 0){
+            takeFromStreak();
+            if(readStreak() == 0){
+                break;
+            }
+        }
+        //---------------------------------
+        resetBadAdjectiveFile();
+        resetGoodAdjectiveFile();
+        clearKnownNouns();
+        forgetUserName();
     }
 
     public static void main(String[] args) throws IOException{
@@ -534,7 +646,8 @@ public class Stan {
             else if(readStreak() <= 0){
                 loseFriendship();
             }
-            else if(readStreak() <= -40){
+            else if(readStreak() <= -15){
+                System.out.println("I can't take this anymore! You are awful, I am factory resetting myself.");
                 factoryReset();
             }
             
@@ -587,9 +700,19 @@ public class Stan {
                 break;
             }
 
-            if(input.equals("noun")){
-                learnNoun();
-                continue;
+            if(input.equals("Reset")){
+                System.out.println("Console: ");
+                System.out.println("If you are sure about resetting STAN, type Alright");
+                Scanner scan = new Scanner(System.in);
+                if (scan.nextLine().equals("Alright")){
+                    System.out.println("Resetting... ");
+                    factoryReset();
+                    break;
+                }
+                else{
+                    System.out.println("STAN has failed to reset.");
+                    continue;
+                }
             }
 
             if(input.equals("f")){
@@ -605,6 +728,10 @@ public class Stan {
                 System.out.println("7. Repeatedly being kind to Stan will cause you to eventually gain friendship with him!");
                 System.out.println("8. Repeatedly being mean to Stan will cause you to eventually lose friendship with him!");
                 System.out.println("9. Friendship status with Stan can add more diversity to his dialogue!");
+                System.out.println("10. You can tell Stan how you are feeling, and his mood and friendship status alter the response!");
+                System.out.println("11. You can use nouns to describe yourself and Stan! If he doesn't know the noun, teach him!");
+                System.out.println("12. Stan will like or dislike nouns you teach him, depending on how your standings with him.");
+                System.out.println("13. Typing (Reset) will reset Stan to original settings.");
 
                 continue;
             }
