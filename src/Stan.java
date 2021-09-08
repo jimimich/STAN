@@ -731,7 +731,8 @@ public class Stan {
                 System.out.println("10. You can tell Stan how you are feeling, and his mood and friendship status alter the response!");
                 System.out.println("11. You can use nouns to describe yourself and Stan! If he doesn't know the noun, teach him!");
                 System.out.println("12. Stan will like or dislike nouns you teach him, depending on how your standings with him.");
-                System.out.println("13. Typing (Reset) will reset Stan to original settings.");
+                System.out.println("13. If you are continuously mean to STAN too many times, he will reset himself.");
+                System.out.println("14. Typing (Reset) will reset Stan to original settings.");
 
                 continue;
             }
