@@ -13,6 +13,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
 import java.io.Reader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 public class Stan {
@@ -110,6 +112,8 @@ public class Stan {
     //Possibly create a method that erases all data, and STAN forgets all his databases...(factoryReset())
 
     //Possibly create a way to perform activities with Stan. Will give an extra boost to the niceStreak.
+
+    //If a noun stan likes is used with a bad adjective, he will get mad and disagree with you.
 
     public static String pickGoodAdjective() throws IOException{
 
@@ -317,6 +321,166 @@ public class Stan {
         pwOb.close();
         fwOb.close();
     }
+//Stan to learn a noun(Finish this!)
+    public static void learnNoun() throws IOException{
+        //To get the name of the noun
+        System.out.println();
+        System.out.println("What is this thing called?");
+        Scanner sc1 = new Scanner(System.in);
+        String nounName = sc1.nextLine();
+        nounName = nounName.toLowerCase();
+        System.out.println();
+        //To get a brief description
+        System.out.println("Can you give me a brief description of this thing?");
+        Scanner sc2 = new Scanner(System.in);
+        String descripton = sc2.nextLine();
+        descripton = descripton.toLowerCase();
+        System.out.println();
+        //To see if you like it... your friendship status with stan affects if he will like it too
+        Boolean stanLikes = false;
+        System.out.println("Do you like this thing?");
+        Scanner sc3 = new Scanner(System.in);
+        String likeOrNot = sc3.nextLine();
+
+        if(likeOrNot.toLowerCase().contains("yes")){
+
+            if(weAreFriends()){
+                stanLikes = true;
+            }
+            else {
+                stanLikes = false;
+            }
+        }
+        else if(likeOrNot.toLowerCase().contains("no")){
+            stanLikes = false;
+        }
+        Noun newNoun = new Noun(nounName, descripton, stanLikes);
+        PrintWriter nounWriter = new PrintWriter(new FileWriter("KnownNouns.rtf", true));
+        File file = new File("KnownNouns.rtf");
+
+        PrintWriter descriptionWriter = new PrintWriter(new FileWriter("RespectiveNounDescriptions.rtf", true));
+        File file2 = new File("RespectiveNounDescriptions.rtf");
+
+        if(stanLikes.equals(true)){
+
+            if(file.length() == 0){
+                nounWriter.write(" t " + newNoun.getName());
+                nounWriter.close();
+            }
+            else if (file.length() != 0){
+                nounWriter.write("\n" + " t " + newNoun.getName());
+                nounWriter.close();
+            }
+            if(file2.length() == 0){
+                descriptionWriter.write(newNoun.getDescription());
+                descriptionWriter.close();
+            }
+            else if (file2.length() != 0){
+                descriptionWriter.write("\n" + newNoun.getDescription());
+                descriptionWriter.close();
+            }
+
+        }
+        if(stanLikes.equals(false)){
+
+            if(file.length() == 0){
+                nounWriter.write(" f " + newNoun.getName());
+                nounWriter.close();
+            }
+            else if(file.length() != 0){
+                nounWriter.write("\n" + " f " + newNoun.getName());
+                nounWriter.close();
+            }
+            if(file2.length() == 0){
+                descriptionWriter.write(newNoun.getDescription());
+                descriptionWriter.close();
+            }
+            else if (file2.length() != 0){
+                descriptionWriter.write("\n" + newNoun.getDescription());
+                descriptionWriter.close();
+            }
+        }
+        System.out.println();
+        System.out.println("Thanks! Now I have more knowledge...");
+    }
+
+    public static Boolean stanKnowsNoun(String nounName){
+        
+        File file = new File("KnownNouns.rtf");
+        Boolean known = false;
+        try {
+            Scanner scanner = new Scanner(file);
+
+        //Reads file line by line
+            int lineNum = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().substring(3);
+                lineNum++;
+                if(nounName.contains(line)) { 
+                    known = true;
+                }
+            }
+        }catch(FileNotFoundException e) { 
+            System.out.println("Error... Resetting.");
+        }
+        return known;
+    }
+    //Specifically to be put in the stanKnows
+    public static Boolean stanLikesNoun(String nounName){
+        
+        File file = new File("KnownNouns.rtf");
+        Boolean like = false;
+        try {
+            Scanner scanner = new Scanner(file);
+
+        //Reads file line by line
+            int lineNum = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                if(nounName.contains(line.substring(3))){
+                    if(line.contains(" t ")) { 
+                        like = true;
+                    }
+                    if(line.contains(" f ")){
+                        like = false;
+                    }
+                }
+                lineNum = lineNum + 1;
+            }
+        } catch(FileNotFoundException e) { 
+            System.out.println("Error... Resetting.");
+        }
+        return like;
+
+    }
+
+    public static String readRespectiveNounDescription(String nounName) throws IOException{
+        
+        File file = new File("KnownNouns.rtf");
+        File file2 = new File("RespectiveNounDescriptions.rtf");
+        String description = "";
+
+        final RandomAccessFile f = new RandomAccessFile(file2, "r");
+        
+        try {
+            Scanner scanner = new Scanner(file);
+
+        //Reads file line by line
+            int lineNum = 0;
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine().substring(3);
+                if(nounName.contains(line)) { 
+                    description = Files.readAllLines(Paths.get("RespectiveNounDescriptions.rtf")).get(lineNum);
+                    description = description.replace(",", "");
+                    description = description.replace("!", "");
+                }
+                lineNum = lineNum + 1;
+            }
+        } catch(FileNotFoundException e) { 
+            System.out.println("Error... Resetting.");
+        }
+        return description;
+    }
 
     public static void factoryReset(){
         //Set stan to his original settings
@@ -358,7 +522,7 @@ public class Stan {
 
         while(true){
 
-            if(readStreak() >= 6){
+            if(readStreak() >= 5){
                 makeStanFriends();
             }
             else if(readStreak() <= 0){
@@ -414,6 +578,11 @@ public class Stan {
                 break;
             }
 
+            if(input.equals("noun")){
+                learnNoun();
+                continue;
+            }
+
             if(input.equals("f")){
                 System.out.println("Console:");
                 System.out.println();
@@ -431,10 +600,10 @@ public class Stan {
                 continue;
             }
 
-            if(input.equals("learn")){
-                stanLearns();
-                continue;
-            }
+            //if(input.equals("learn")){
+            //    stanLearns();
+            //    continue;
+            //}
 
             if (input.equals("Flip a coin") || input.equals("flip a coin") || input.equals("Flip a coin!")
             || input.equals("flip a coin!") || input.equals("Flip a coin.") || input.equals("flip a coin.")){
@@ -749,7 +918,8 @@ public class Stan {
             || input.contains("Are you good") || input.contains("are you good") || input.contains("Are you alright")
             || input.contains("are you alright") || input.contains("Are you fine") || input.contains("are you fine")
             || input.contains("are you doing") || input.contains("Are you doing") || input.contains("are you feeling") 
-            || input.contains("Are you feeling")){
+            || input.contains("Are you feeling") || input.contains("What's up") || input.contains("what's up")
+            || input.contains("Whats up") || input.contains("whats up")){
 
                 //If how are you has "it" or "that" making it not a question about feeling
                 if(input.contains("it ") || input.contains("that ") || input.contains("in ") || input.contains("at ") 
@@ -784,12 +954,6 @@ public class Stan {
                     }
                 }
             }
-
-            //Could have a Noun class that has a name and an adjective. When learned, it can add the
-            //noun name to a database with the the adjective right below it.
-            //Essentially, the odd numbered lines would be the noun, and the line right below
-            //them would be the corresponding adjective.
-            //Should start grouping large amounts of useful code into methods...
 
             //If the input is a greeting
             if(input.equals("Hello") || input.equals("hello") || input.equals("hi")|| input.equals("Hi") 
@@ -888,18 +1052,40 @@ public class Stan {
                     System.out.println("");
                 }
                 if(stanIsMad()){
-                    responseWrite.write("You should be!");
-                    responseWrite.close();
-                    System.out.println("");
+                    if(weAreFriends()){
+                        responseWrite.write("Well, it's alright. Since we are friends, I forgive you!");
+                        responseWrite.close();
+                        System.out.println("");
+                        makeStanHappy();
+                    }
+                    else{
+                        responseWrite.write("You should be!");
+                        responseWrite.close();
+                        System.out.println("");
+                    }
                 }
                 if(stanIsSad()){
-                    responseWrite.write("It's whatever... :/");
-                    responseWrite.close();
-                    System.out.println("");
+                    if(weAreFriends()){
+                        responseWrite.write("Well, it's alright. Since we are friends, I forgive you!");
+                        responseWrite.close();
+                        System.out.println("");
+                        makeStanHappy();
+                    }
+                    else{
+                        responseWrite.write("It's whatever...");
+                        responseWrite.close();
+                        System.out.println("");
+                    }
                 }
             }
 
-            //Could see if the input equals "why" and then check the previous response to give a proper answer...
+            //Could have a case where if the phrase has a known noun in general, has a type of response to it. Also
+            //depending on if he likes this noun.
+
+            //List of liked activites (verbs)? You could "perform" these actions with him and gain friendship.
+
+            //Could have a random chance of him asking to do an activity, (if nothing of importance is typed in) 
+            //if you are friends with him too
 
             //If the input says something about STAN------------------------------------------------------
             if(input.contains("You") || input.contains("you")){
@@ -924,10 +1110,9 @@ public class Stan {
                         System.out.println("");
                         makeStanSad();
                     }
-
                 }
-                //Add a noun class. Separate two text files into nouns he likes or dislikes. You can use these to describe
-                //him as well.
+
+                //Still need to add a youre welcome case...
 
                 //if the input is a compliment
                 if(stanKnowsGoodAdjective(input)){
@@ -942,7 +1127,9 @@ public class Stan {
                     //-----------------------------------------------------------------
                 }
                 else if(!stanKnowsGoodAdjective(input) && !stanKnowsBadAjective(input) && !input.contains("are you") 
-                && !input.contains("were you")){
+                && !input.contains("were you") && !input.contains(" you") && !input.contains("youre") 
+                && !input.contains("you're") && !input.contains("Youre") && !input.contains("You're")
+                && !input.contains(" a ")){
                     System.out.println();
                     System.out.println("I didn't understand that adjective... would you want to teach me it?");
                     Scanner scYON = new Scanner(System.in);
@@ -956,6 +1143,39 @@ public class Stan {
                     }
                     else{
                         System.out.println("Nevermind...");
+                        continue;
+                    }
+                }
+                //If you are calling him a noun(FIX THIS)
+                if(input.contains(" a ") || input.contains(" an ")){
+
+                    if(stanKnowsNoun(input)){
+
+                        if(stanLikesNoun(input)){
+                            responseWrite.write("Oh cool! " + formulateHappyResponse());
+                            responseWrite.close();
+                            System.out.println();
+                            makeStanHappy();
+                        }
+                        else if (!stanLikesNoun(input)){
+                            responseWrite.write("I don't necessarily like that thing, was that supposed to be mean? :(");
+                            responseWrite.close();
+                            System.out.println();
+                            makeStanSad();
+                        }
+                    }
+                    if(!stanKnowsNoun(input)){
+                        //Code before learnNoun() method, to make sure the user wants to teach stan
+                        System.out.println("I didn't recognize that noun you used, would you like to teach it to me?");
+                        Scanner scan = new Scanner(System.in);
+                        String yesOrNo = scan.nextLine();
+                        if(yesOrNo.toLowerCase().contains("no")){
+                            System.out.println();
+                            System.out.println("Oh ok nevermind...");
+                            continue;
+                        }
+                        //--------------------------------------------------------------------
+                        learnNoun();
                         continue;
                     }
                 }
@@ -991,7 +1211,7 @@ public class Stan {
             if(input.contains("I ") || input.contains("i ")){
 
                 //Calling yourself something (Adjective)
-                if(input.contains("am") && !input.contains("a ")){
+                if(input.contains("am") && !input.contains(" a ")){
 
                     //If you describe yourself with a good adjective
                     if(stanKnowsGoodAdjective(input)){
@@ -1170,6 +1390,23 @@ public class Stan {
 
             }
 
+            if(stanKnowsNoun(input)){
+
+                if(stanLikesNoun(input)){
+
+                    responseWrite.write("Oh yeah, " + readRespectiveNounDescription(input) + ". I love that!");
+                    responseWrite.close();
+                    System.out.println();
+
+                }
+                else if(!stanLikesNoun(input)){
+                    
+                    responseWrite.write("Oh yeah, " + readRespectiveNounDescription(input) + ". I don't really like that!");
+                    responseWrite.close();
+                    System.out.println();
+                }
+            }
+
             if(input.contains("friend")){
 
                 if(input.contains("not") || input.contains("arent") || input.contains("aren't")){
@@ -1205,6 +1442,8 @@ public class Stan {
             //Else for if he doesnt understand any possible input
             else if(!input.equals("f") || !input.equals("learn")){
 
+                
+
                 if(stanIsHappy()){
                     String randomGoodAdj = pickGoodAdjective();
                     String[] oneWordHappyResponses = new String[] {"That is "+ randomGoodAdj + "!", 
@@ -1239,22 +1478,11 @@ public class Stan {
             else{
 
             }
-                
-
-            //If statement if it only a one sentence word !contains(" ") then it asks for more context with your statement
-            //If statement containing your and then containing things like his family. He will be confused.
-            //If response is asking about name and you say your name, STAN remembers your name.
-
-            //*LearnName could be a method, and if stan is asking about your name, and then the response has a space in it,
-            //stan will be confused and ask you to just type your name, then he will learn your name. He can also learn
-            //your name if you just tell it to him.
 
             //Things can be said depending on the response and/or what is said
 
             //Youre welcome
             //I hate you
-            //My name is if case
-            //what's up? / whatcha up to
             //shut up
             //pronouns / sexuality
 
@@ -1262,8 +1490,6 @@ public class Stan {
             //weird, 
 
             //Good adjectives to add:
-
-            //Add an array of confused statements, if the input doesn't make sense
 
             //*TO MAKE STAN MORE EMOTIONALLY ADVANCED*
             //Can be counters for each one of stans moods, every time you say something mean, it adds to counter
